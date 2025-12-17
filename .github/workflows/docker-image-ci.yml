@@ -18,29 +18,29 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      # Build and test PeerTube 5.2 image as tag "v521"
-      - name: Pull the `owntube/peertube-runner:v521` Docker image if it exists
-        run: docker pull owntube/peertube-runner:v521 || true
-      - name: Build the `owntube/peertube-runner:v521` Docker image
-        run: docker buildx build . --platform linux/amd64 --file Dockerfile.bullseye --tag owntube/peertube-runner:v521
-      - name: Test the `owntube/peertube-runner:v521` Docker image
-        run: docker run -i --rm --name v521-runner-help owntube/peertube-runner:v521 peertube-runner --help
-
       # Build and test PeerTube 6.3.2 image as tag "v632"
       - name: Pull the `owntube/peertube-runner:v632` Docker image if it exists
         run: docker pull owntube/peertube-runner:v632 || true
       - name: Build the `owntube/peertube-runner:v632` Docker image
-        run: docker buildx build . --platform linux/amd64 --file Dockerfile.bookworm --tag owntube/peertube-runner:v632
+        run: docker buildx build . --platform linux/amd64 --file Dockerfile.v632 --tag owntube/peertube-runner:v632
       - name: Test the `owntube/peertube-runner:v632` Docker image
         run: docker run -i --rm --name v632-runner-help owntube/peertube-runner:v632 npx peertube-runner --help
 
-      # Push image tags "v521", "v632" and "latest"
-      - name: Push the `owntube/peertube-runner:v521` Docker image
-        run: docker push owntube/peertube-runner:v521
+      # Build and test PeerTube 7.3.0 image as tag "v730"
+      - name: Pull the `owntube/peertube-runner:v730` Docker image if it exists
+        run: docker pull owntube/peertube-runner:v730 || true
+      - name: Build the `owntube/peertube-runner:v730` Docker image
+        run: docker buildx build . --platform linux/amd64 --file Dockerfile.v730 --tag owntube/peertube-runner:v730
+      - name: Test the `owntube/peertube-runner:v730` Docker image
+        run: docker run -i --rm --name v730-runner-help owntube/peertube-runner:v730 npx peertube-runner --help
+
+      # Push image tags "v632", "v730" and "latest"
       - name: Push the `owntube/peertube-runner:v632` Docker image
         run: docker push owntube/peertube-runner:v632
+      - name: Push the `owntube/peertube-runner:v730` Docker image
+        run: docker push owntube/peertube-runner:v730
       - name: Push the `owntube/peertube-runner:latest` Docker image
-        run: docker tag owntube/peertube-runner:v632 owntube/peertube-runner:latest && docker push owntube/peertube-runner:latest
+        run: docker tag owntube/peertube-runner:v730 owntube/peertube-runner:latest && docker push owntube/peertube-runner:latest
 
       # Logout, as logout=true from `docker/login-action@v3` does not seem to work
       - run: docker logout index.docker.io
