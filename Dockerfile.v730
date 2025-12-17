@@ -13,7 +13,7 @@ ENV HOME=/home/peertube
 USER 999
 
 # https://docs.joinpeertube.org/maintain/tools#peertube-runner
-RUN pipx install whisper-ctranslate2 && pipx ensurepath
+RUN pipx install whisper-ctranslate2==0.5.6 && pipx ensurepath
 RUN npm install @peertube/peertube-runner@0.2.0
 
 ENV PATH="${PATH}:/home/peertube/.local/bin"
